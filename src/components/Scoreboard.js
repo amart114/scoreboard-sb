@@ -1,13 +1,20 @@
 import React, {useState, useEffect} from "react"
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 
 export default function Scoreboard() {
     const [gameData, setGameData] = useState([])
-    const [query, setQuery] = useState("")
-    const [sport, setSport] = useState(0)
-    const [searchSubmit, setSearchSubmit] = useState(false)
+    // const [query, setQuery] = useState("")
+    const [startDate, setStartDate] = useState(new Date());
+    const [filterOptions, setFilterOptions] = useState(
+        {sport: 0, gender: ""}
+    )
+    // const [searchSubmit, setSearchSubmit] = useState(false)
 
     useEffect(() => {
-        fetch(`https://api.scorebooklive.com/v2/games?date=2023-01-15&primary=true&priority_order=true&status_id=1&sport_id=${sport}`)
+        const date = reformatDate(startDate)
+        const {sport, gender} = filterOptions
+        fetch(`https://api.scorebooklive.com/v2/games?date=${date}&primary=true&priority_order=true&status_id=1&sport_id=${sport}&gender_id=${gender}`)
         .then(res => {
             if(!res.ok) {
                 throw Error("Something went wrong")
@@ -16,9 +23,8 @@ export default function Scoreboard() {
         })
         .then(data => setGameData(data.data))
         .catch(err => console.error(err))
-    }, [sport])
+    }, [filterOptions, startDate])
 
-    // console.log(gameData)
 
     function renderResults(data) {
         return data.map(matchup => {
@@ -38,6 +44,25 @@ export default function Scoreboard() {
             )   
         })
     }
+
+    function handleChange(event) {
+        setFilterOptions(prevFilterOptions => {
+            return {
+                ...prevFilterOptions,
+                [event.target.name]: event.target.value
+            }
+        })
+        
+    }
+
+    function reformatDate(date){
+        const month = date.getUTCMonth() + 1; //months from 1-12
+        const day = date.getDate();
+        const year = date.getUTCFullYear();
+
+        const newdate = year + "-" + month + "-" + day;
+        return newdate;
+    }
     
     return (
         <div className="main-container">
@@ -46,31 +71,51 @@ export default function Scoreboard() {
             </div>
 
             <div className="filters">
-                <select>
-                    onChange={(e) => {
-                        console.log(e.target.value)
-                        setSearchSubmit(true)
-                    }}
-                    className="sport-filter"
-                    aria-label="Filter results by sport"
-                    <option value={1}>Basketball</option>
-                    <option value={2}>Football</option>
-                    <option value={3}>Baseball</option>
-                    <option value="4">Softball</option>
-                    <option value="5">Lacrosse</option>
-                    <option value="6">Soccer</option>
-                    <option value="7">Volleyball</option>
-                    <option value="8">Field Hockey</option>
-                    <option value="9">Ice Hockey</option>
-                    <option value="10">Water Polo</option>
-                    <option value="11">Cross Country</option>
-                    <option value="12">Golf</option>
-                    <option value="13">Tennis</option>
-                </select>
+                <div className="date-picker">
+                    <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+                </div>
+                <form>
+                    <select
+                        id="sport"
+                        value={filterOptions.sport}
+                        onChange={handleChange}
+                        className="sport-filter"
+                        name="sport"
+                        aria-label="Filter results by sport"
+                    >
+                        <option value={0}>--Select a Sport--</option>
+                        <option value={1}>Basketball</option>
+                        <option value={2}>Football</option>
+                        <option value={3}>Baseball</option>
+                        <option value={4}>Softball</option>
+                        <option value={5}>Lacrosse</option>
+                        <option value={6}>Soccer</option>
+                        <option value={7}>Volleyball</option>
+                        <option value={8}>Field Hockey</option>
+                        <option value={9}>Ice Hockey</option>
+                        <option value={10}>Water Polo</option>
+                        <option value={11}>Cross Country</option>
+                        <option value={12}>Golf</option>
+                        <option value={13}>Tennis</option>
+                    </select>
+                    <select
+                        id="gender"
+                        value={filterOptions.gender}
+                        onChange={handleChange}
+                        className="gender-filter"
+                        name="gender"
+                        aria-label="Filter results by gender"
+                    >
+                        <option value={0}>--Select Gender--</option>
+                        <option value={1}>Male</option>
+                        <option value={2}>Female</option>
+                        <option value={3}>Co-ed</option>
+                    </select>
+                </form>
             </div>
 
             <div className="scoreboard-container">
-            <>{gameData.length > 0 ? renderResults(gameData) : null}</>
+            <>{gameData.length > 0 ? renderResults(gameData) : "No Games Scheduled for Today"}</>
             </div>
 
             <div className="sidebar">
@@ -80,21 +125,3 @@ export default function Scoreboard() {
         
     )
 }
-
-
-
-
-
-// "Accept" :	"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-//             "Accept-Encoding" :	"gzip, deflate, br",
-//             "Accept-Language" :	"en-US,en;q=0.5",
-//             "Connection" :	"keep-alive",
-//             "DNT" :	"1",
-//             "Host" : "api.scorebooklive.com",
-//             "If-None-Match" :'W/"b57c5cd64e085f2c465f56e251b93ec3"',
-//             "Sec-Fetch-Dest" :	"document",
-//             "Sec-Fetch-Mode" : 	"navigate",
-//             "Sec-Fetch-Site" :	"none",
-//             "Sec-Fetch-User" : 	"?1",
-//             "Upgrade-Insecure-Requests" :	"1",
-//             User-Agent	Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:108.0) Gecko/20100101 Firefox/108.0
