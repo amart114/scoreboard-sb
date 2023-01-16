@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color:#FAF9F6;
 }
 
 code {
@@ -23,14 +24,37 @@ code {
 
 .header {
   grid-area: header;
-  background: blue;
-  padding: 2em;
+  background: #2a2d43;
+  padding: 4em;
+  background-image: url('https://d3vbd4zrteu05a.cloudfront.net/assets/packs/media/nav/sblive-nav-logo-41abb18c.png');
+  background-repeat: no-repeat;
+  background-position: left center;
 }
 
 .filters {
   grid-area: filter;
-  background: yellow;
-  padding: 3em;
+  background: #09bbf2;
+  padding: 1.75em 3em;
+  display: flex;
+}
+
+.filters .date-picker {
+  margin-right: 3em;
+}
+
+.filters #sport {
+  margin-right: 3em;
+}
+
+.filters .date-inner,
+.filters #sport,
+.filters #gender {
+  padding: 1em 0em;
+  font-size: 1em;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
 
 .scoreboard-container {
@@ -41,19 +65,46 @@ code {
 }
 
 .single-matchup {
-  
-  margin: 1em;
-  border: grey 1px solid;
-  border-radius: 10px;
+  max-width: 500px;
+  height: 150px;
+  margin: 1.5em;
+  border: lightgrey 1px solid;
+  border-radius: 20px;
+}
+
+.single-matchup:hover {
+  background: #09bbf210;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
 
 .single-team {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
-.single-team > img {
-  max-width: 10%;
+.single-team .team-logo {
+  max-width: 30px;
+  margin: 1.25em;
+  align-self: center;
+}
+
+.single-team .team-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.25em;
+  margin-right: 0.5em;
+  text-decoration: none;
+  color: black;
+}
+
+.single-team .team-state {
+  font-size: 0.75em;
+  align-self: center;
+}
+
+.single-team .team-score {
+  margin-left: auto;
   margin-right: 1em;
-  margin-bottom: 1em;
 }

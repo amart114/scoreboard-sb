@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
+import logo from "../images/default-logo.png"
 
 export default function Scoreboard() {
     const [gameData, setGameData] = useState([])
@@ -13,8 +14,9 @@ export default function Scoreboard() {
 
     useEffect(() => {
         const date = formatDate(startDate)
+        
         const {sport, gender} = filterOptions
-        fetch(`https://api.scorebooklive.com/v2/games?date=${date}&primary=true&priority_order=true&status_id=1&sport_id=${sport}&gender_id=${gender}`)
+        fetch(`https://api.scorebooklive.com/v2/games?date=${date}&primary=true&priority_order=true&sport_id=${sport}&gender_id=${gender}`)
         .then(res => {
             if(!res.ok) {
                 throw Error("Something went wrong")
@@ -30,13 +32,18 @@ export default function Scoreboard() {
         return data.map(matchup => {
             return (
                 <div className="single-matchup">
+                    <div className="game-status">
+                    </div>
                     {matchup.game_teams.map(team => {
                         return (
-                            <div className="single-team">
-                                <img src={team.team.image} />
-                                <h2>{team.team.name}</h2>
-                                <p>{team.team.state}</p>
-                            </div>
+                            <>
+                                <div className="single-team">
+                                    <img src={team.team.image ? team.team.image : logo} className="team-logo"/>
+                                    <a className="team-name" href={team.team.link.webapp} target="_blank">{team.team.name}</a>
+                                    <p className="team-state">{team.team.state}</p>
+                                    <p className="team-score">{team.score}</p>
+                                </div>
+                            </>
                         )
                     })}
                 </div>
@@ -72,7 +79,7 @@ export default function Scoreboard() {
 
             <div className="filters">
                 <div className="date-picker">
-                    <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+                    <DatePicker className="date-inner" selected={startDate} onChange={(date) => setStartDate(date)} />
                 </div>
                 <form>
                     <select
