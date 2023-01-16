@@ -12,7 +12,7 @@ export default function Scoreboard() {
     // const [searchSubmit, setSearchSubmit] = useState(false)
 
     useEffect(() => {
-        const date = reformatDate(startDate)
+        const date = formatDate(startDate)
         const {sport, gender} = filterOptions
         fetch(`https://api.scorebooklive.com/v2/games?date=${date}&primary=true&priority_order=true&status_id=1&sport_id=${sport}&gender_id=${gender}`)
         .then(res => {
@@ -55,7 +55,7 @@ export default function Scoreboard() {
         
     }
 
-    function reformatDate(date){
+    function formatDate(date){
         const month = date.getUTCMonth() + 1; //months from 1-12
         const day = date.getDate();
         const year = date.getUTCFullYear();
