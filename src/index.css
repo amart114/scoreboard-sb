@@ -14,6 +14,7 @@ code {
 }
 
 .main-container {
+  font-family: "Roboto", "sans-serif";
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-areas:
@@ -34,7 +35,7 @@ code {
 .filters {
   grid-area: filter;
   background: #09bbf2;
-  padding: 1.75em 3em;
+  padding: 1.75em 2em;
   display: flex;
 }
 
@@ -42,19 +43,32 @@ code {
   margin-right: 3em;
 }
 
-.filters #sport {
+.filters #sport,
+.filters #state,
+.filters #gender {
   margin-right: 3em;
 }
 
 .filters .date-inner,
 .filters #sport,
-.filters #gender {
-  padding: 1em 0em;
+.filters #state,
+.filters #gender,
+.filters #status {
+  font-family: "Roboto", "sans-serif";
+  letter-spacing: 1px;
+  padding: 1em 0.5em;
   font-size: 1em;
   text-align: center;
   border: none;
   border-radius: 5px;
+  cursor: pointer;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.scoreboard-container .no-games-text {
+  font-size: 2em;
+  padding: 2em;
+  font-weight: bold;
 }
 
 .scoreboard-container {
@@ -66,8 +80,8 @@ code {
 
 .single-matchup {
   max-width: 500px;
-  height: 150px;
-  margin: 1.5em;
+  max-height: 150px;
+  margin: 1.5em 2em;
   border: lightgrey 1px solid;
   border-radius: 20px;
 }
@@ -81,12 +95,20 @@ code {
   display: flex;
   align-items: center;
   width: 100%;
+  letter-spacing: 1.2px;
+  
+}
+
+.single-team:first-child {
+  border-bottom: lightgrey 1px solid;
 }
 
 .single-team .team-logo {
   max-width: 30px;
+  max-height: 25px;
   margin: 1.25em;
   align-self: center;
+  
 }
 
 .single-team .team-name {
@@ -97,6 +119,7 @@ code {
   margin-right: 0.5em;
   text-decoration: none;
   color: black;
+  max-width: 300px;
 }
 
 .single-team .team-state {

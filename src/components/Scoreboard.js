@@ -5,18 +5,15 @@ import logo from "../images/default-logo.png"
 
 export default function Scoreboard() {
     const [gameData, setGameData] = useState([])
-    // const [query, setQuery] = useState("")
     const [startDate, setStartDate] = useState(new Date());
     const [filterOptions, setFilterOptions] = useState(
-        {sport: 0, gender: ""}
+        {sport: 0, state: "", gender: "", status: ""}
     )
-    // const [searchSubmit, setSearchSubmit] = useState(false)
 
     useEffect(() => {
         const date = formatDate(startDate)
-        
-        const {sport, gender} = filterOptions
-        fetch(`https://api.scorebooklive.com/v2/games?date=${date}&primary=true&priority_order=true&sport_id=${sport}&gender_id=${gender}`)
+        const {sport, state, gender, status} = filterOptions
+        fetch(`https://api.scorebooklive.com/v2/games?date=${date}&primary=true&priority_order=true&sport_id=${sport}&state=${state}&gender_id=${gender}&status_id=${status}`)
         .then(res => {
             if(!res.ok) {
                 throw Error("Something went wrong")
@@ -32,16 +29,17 @@ export default function Scoreboard() {
         return data.map(matchup => {
             return (
                 <div className="single-matchup">
-                    <div className="game-status">
-                    </div>
-                    {matchup.game_teams.map(team => {
+                    {matchup.game_teams.map(teams => {
+                        const {team, score} = teams
                         return (
                             <>
                                 <div className="single-team">
-                                    <img src={team.team.image ? team.team.image : logo} className="team-logo"/>
-                                    <a className="team-name" href={team.team.link.webapp} target="_blank">{team.team.name}</a>
-                                    <p className="team-state">{team.team.state}</p>
-                                    <p className="team-score">{team.score}</p>
+                                <img src={team.image ? team.image : logo} className="team-logo"/>
+                                    <a className="team-name" href={team.link.webapp} target="_blank">
+                                        {team.name} 
+                                    </a>
+                                    <p className="team-state">{team.state}</p>
+                                    <p className="team-score">{score}</p>
                                 </div>
                             </>
                         )
@@ -73,9 +71,8 @@ export default function Scoreboard() {
     
     return (
         <div className="main-container">
-            <div className="header">
 
-            </div>
+            <div className="header"></div>
 
             <div className="filters">
                 <div className="date-picker">
@@ -105,6 +102,69 @@ export default function Scoreboard() {
                         <option value={12}>Golf</option>
                         <option value={13}>Tennis</option>
                     </select>
+
+                    <select
+                        id="state"
+                        value={filterOptions.state}
+                        onChange={handleChange}
+                        className="state-filter"
+                        name="state"
+                        aria-label="Filter results by state"
+                    >
+                        <option value="">--Select State--</option>
+                        <option value="AL">Alabama</option>
+                        <option value="AK">Alaska</option>
+                        <option value="AZ">Arizona</option>
+                        <option value="AR">Arkansas</option>
+                        <option value="CA">California</option>
+                        <option value="CO">Colorado</option>
+                        <option value="CT">Connecticut</option>
+                        <option value="DE">Delaware</option>
+                        <option value="DC">District Of Columbia</option>
+                        <option value="FL">Florida</option>
+                        <option value="GA">Georgia</option>
+                        <option value="HI">Hawaii</option>
+                        <option value="ID">Idaho</option>
+                        <option value="IL">Illinois</option>
+                        <option value="IN">Indiana</option>
+                        <option value="IA">Iowa</option>
+                        <option value="KS">Kansas</option>
+                        <option value="KY">Kentucky</option>
+                        <option value="LA">Louisiana</option>
+                        <option value="ME">Maine</option>
+                        <option value="MD">Maryland</option>
+                        <option value="MA">Massachusetts</option>
+                        <option value="MI">Michigan</option>
+                        <option value="MN">Minnesota</option>
+                        <option value="MS">Mississippi</option>
+                        <option value="MO">Missouri</option>
+                        <option value="MT">Montana</option>
+                        <option value="NE">Nebraska</option>
+                        <option value="NV">Nevada</option>
+                        <option value="NH">New Hampshire</option>
+                        <option value="NJ">New Jersey</option>
+                        <option value="NM">New Mexico</option>
+                        <option value="NY">New York</option>
+                        <option value="NC">North Carolina</option>
+                        <option value="ND">North Dakota</option>
+                        <option value="OH">Ohio</option>
+                        <option value="OK">Oklahoma</option>
+                        <option value="OR">Oregon</option>
+                        <option value="PA">Pennsylvania</option>
+                        <option value="RI">Rhode Island</option>
+                        <option value="SC">South Carolina</option>
+                        <option value="SD">South Dakota</option>
+                        <option value="TN">Tennessee</option>
+                        <option value="TX">Texas</option>
+                        <option value="UT">Utah</option>
+                        <option value="VT">Vermont</option>
+                        <option value="VA">Virginia</option>
+                        <option value="WA">Washington</option>
+                        <option value="WV">West Virginia</option>
+                        <option value="WI">Wisconsin</option>
+                        <option value="WY">Wyoming</option>
+                    </select>
+
                     <select
                         id="gender"
                         value={filterOptions.gender}
@@ -118,11 +178,27 @@ export default function Scoreboard() {
                         <option value={2}>Female</option>
                         <option value={3}>Co-ed</option>
                     </select>
+
+                    <select
+                        id="status"
+                        value={filterOptions.status}
+                        onChange={handleChange}
+                        className="status-filter"
+                        name="status"
+                        aria-label="Filter results by status"
+                    >
+                        <option value="">--Game Status--</option>
+                        <option value={1}>Upcoming</option>
+                        <option value={2}>Live</option>
+                        <option value={3}>Final</option>
+                    </select>
                 </form>
             </div>
 
             <div className="scoreboard-container">
-            <>{gameData.length > 0 ? renderResults(gameData) : "No Games Scheduled for Today"}</>
+                <>
+                    {gameData.length > 0 ? renderResults(gameData) : <p className="no-games-text">No Games Scheduled</p>}
+                </>
             </div>
 
             <div className="sidebar">
