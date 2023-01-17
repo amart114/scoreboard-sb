@@ -75,13 +75,19 @@ code {
   grid-area: score;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  /* grid-gap: 2em; */
   align-items: center;
+}
+
+.game-details-link {
+  text-decoration: none;
+  color: inherit;
+  margin: 2em 1.5em 1em 1.5em;
 }
 
 .single-matchup {
   max-width: 500px;
   max-height: 150px;
-  margin: 1.5em 2em;
   border: lightgrey 1px solid;
   border-radius: 20px;
 }
@@ -120,6 +126,10 @@ code {
   text-decoration: none;
   color: black;
   max-width: 300px;
+}
+
+.single-team .team-name:hover {
+  font-weight: bold;
 }
 
 .single-team .team-state {

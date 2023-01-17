@@ -27,25 +27,27 @@ export default function Scoreboard() {
 
     function renderResults(data) {
         return data.map(matchup => {
+            const matchupDetails = `https://scorebooklive.com/games/${matchup.slug}`
             return (
-                <div className="single-matchup">
-                    {matchup.game_teams.map(teams => {
-                        const {team, score} = teams
-                        return (
-                            <>
-                                <div className="single-team">
-                                <img src={team.image ? team.image : logo} className="team-logo"/>
-                                    <a className="team-name" href={team.link.webapp} target="_blank">
-                                        {team.name} 
-                                    </a>
-                                    <p className="team-state">{team.state}</p>
-                                    <p className="team-score">{score}</p>
-                                </div>
-                            </>
-                        )
-                    })}
-                </div>
-                
+                <a href={matchupDetails} target="_blank" className="game-details-link">
+                    <div className="single-matchup">
+                        {matchup.game_teams.map(teams => {
+                            const {team, score} = teams
+                            return (
+                                <>
+                                    <div className="single-team">
+                                    <img src={team.image ? team.image : logo} className="team-logo"/>
+                                        <a className="team-name" href={team.link.webapp} target="_blank">
+                                            {team.name} 
+                                        </a>
+                                        <p className="team-state">{team.state}</p>
+                                        <p className="team-score">{score}</p>
+                                    </div>
+                                </>
+                            )
+                        })}
+                    </div>
+                </a>
             )   
         })
     }
