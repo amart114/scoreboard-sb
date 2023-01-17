@@ -1,3 +1,14 @@
+## Installation Instructions
+
+This project was bootstrapped with create-react-app. The instructions for create-react-app can be found below.
+
+It should also be noted that there is a CORS issue with the fetch request to the API. The workarounds for this are either building a proxy server or installing the browser extension CORS Unblock (https://webextension.org/listing/access-control.html)
+
+I have opted for the latter in this project.
+
+## Technologies Used
+HTML, CSS, JavaScript, React, Jest, create-react-app & react-datepicker
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
