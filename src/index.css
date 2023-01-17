@@ -1,27 +1,26 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Roboto", "sans-serif";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color:#FAF9F6;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.main-container {
+  display: grid;
+  grid-template: 1 / repeat(auto, 1fr);
+  grid-template-areas:
+  "header"
+  "filter"
+  "filter"
+  "filter"
+  "filter"
+  "score";
+
+  
 }
 
-.main-container {
-  font-family: "Roboto", "sans-serif";
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-areas:
-    "header header header header"
-    "filter filter filter filter"
-    "score score score sidebar";
-}
+
 
 .header {
   grid-area: header;
@@ -75,7 +74,6 @@ code {
   grid-area: score;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  /* grid-gap: 2em; */
   align-items: center;
 }
 
@@ -141,3 +139,14 @@ code {
   margin-left: auto;
   margin-right: 1em;
 }
+
+@media (min-width: 600px) {
+  .main-container {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas:
+    "header header header header"
+    "filter filter filter filter"
+    "score score score sidebar";
+  }
+}
+
