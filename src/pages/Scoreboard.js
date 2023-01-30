@@ -62,8 +62,8 @@ export default function Scoreboard() {
     }
 
     function handleChange(event) {
+        if (page > 1) setPage(1)
         setFilterOptions(prevFilterOptions => {
-            setPage(1)
             return {
                 ...prevFilterOptions,
                 [event.target.name]: event.target.value
