@@ -5,24 +5,46 @@ import Matchup from "../components/Matchup"
 
 export default function Scoreboard() {
     const [gameData, setGameData] = useState([])
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(new Date())
     const [filterOptions, setFilterOptions] = useState(
         {sport: 0, state: "", gender: "", status: ""}
     )
+    const [page, setPage] = useState(1)
 
     useEffect(() => {
         const date = formatDate(startDate)
         const {sport, state, gender, status} = filterOptions
-        fetch(`https://api.scorebooklive.com/v2/games?date=${date}&primary=true&priority_order=true&sport_id=${sport}&state=${state}&gender_id=${gender}&status_id=${status}`)
+        fetch(`https://api.scorebooklive.com/v2/games?date=${date}&primary=true&priority_order=true&sport_id=${sport}&state=${state}&gender_id=${gender}&status_id=${status}&page=${page}`)
         .then(res => {
             if(!res.ok) {
                 throw Error("Something went wrong")
             }
             return res.json()
         })
-        .then(data => setGameData(data.data))
+        .then(data => {
+            if (page > 1) {
+                setGameData(prevGameData => ([...prevGameData, ...data.data]))
+                } else {
+                setGameData(data.data)
+            }
+        })
         .catch(err => console.error(err))
-    }, [filterOptions, startDate])
+    }, [filterOptions, startDate, page])
+
+    const onScroll = () => {
+        const scrollTop = document.documentElement.scrollTop
+        const scrollHeight = document.documentElement.scrollHeight
+        const clientHeight = document.documentElement.clientHeight
+    
+        if (scrollTop + clientHeight >= scrollHeight) {
+            setPage(page + 1)
+        }
+    }
+
+    useEffect(() => {
+            window.addEventListener('scroll', onScroll)
+            return () => window.removeEventListener('scroll', onScroll)
+    }, [page])
 
 
     function renderResults(data) {
@@ -41,6 +63,7 @@ export default function Scoreboard() {
 
     function handleChange(event) {
         setFilterOptions(prevFilterOptions => {
+            setPage(1)
             return {
                 ...prevFilterOptions,
                 [event.target.name]: event.target.value
@@ -50,6 +73,7 @@ export default function Scoreboard() {
     }
 
     function formatDate(date){
+        // setPage(1)
         const month = date.getUTCMonth() + 1; //months from 1-12
         const day = date.getDate();
         const year = date.getUTCFullYear();
