@@ -51,7 +51,7 @@ export default function Scoreboard() {
         return data.map(matchup => {
             const matchupDetails = `https://scorebooklive.com/games/${matchup.slug}`
             return (
-                <a href={matchupDetails} target="_blank" className="game-details-link">
+                <a href={matchupDetails} target="_blank" rel="noopener noreferrer" className="game-details-link">
                     <Matchup 
                         key={matchup.id}
                         matchup={matchup}
