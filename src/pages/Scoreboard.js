@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import Matchup from "../components/Matchup"
+import {formatDate} from "../utils/index"
 
 export default function Scoreboard() {
     const [gameData, setGameData] = useState([])
@@ -72,15 +73,6 @@ export default function Scoreboard() {
         
     }
 
-    function formatDate(date){
-        // setPage(1)
-        const month = date.getUTCMonth() + 1; //months from 1-12
-        const day = date.getDate();
-        const year = date.getUTCFullYear();
-
-        const newdate = year + "-" + month + "-" + day;
-        return newdate;
-    }
     
     return (
         <div className="main-container">
